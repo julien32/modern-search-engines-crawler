@@ -1,0 +1,6 @@
+selenium
+requests
+google_search
+translator
+bs4
+pandas
