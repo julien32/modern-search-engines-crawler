@@ -22,8 +22,8 @@ class Search:
         already_added_urls = []
         urls = {}
         for query in queries:
+            print(query)
             query = query.replace(" ", "+")
-            # Specify the path to the ChromeDriver
             options = Options()
             options.add_argument('--lang=en')
             service = Service(CHROMEDRIVER)
@@ -32,18 +32,13 @@ class Search:
             driver.get(f'https://duckduckgo.com/?q={query}&t=h_&ia=web')
             actions = ActionChains(driver)
             
-            button = driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div/div[2]/div/div/section/nav/ul[2]/li[2]/button/span[2]/span/div/a")
-            time.sleep(0.5)
+            wait = WebDriverWait(driver, 10)
+            button = wait.until(EC.element_to_be_clickable((By.XPATH, "/html/body/div[2]/div[2]/div/div[2]/div/div/section/nav/ul[2]/li[2]/button/span[2]/span/div/a")))
             actions.move_to_element(button).click().perform()
-            time.sleep(0.5)
-            button = driver.find_element(By.XPATH, '//*[@id="setting_kad"]')
-            time.sleep(0.5)
+            button = wait.until(EC.element_to_be_clickable((By.XPATH, '//*[@id="setting_kad"]')))
             actions.move_to_element(button).click().perform()
-            time.sleep(2)
             button.send_keys("e")
-            time.sleep(2)
-
-            button = driver.find_element(By.ID, "more-results")
+            button = wait.until(EC.presence_of_element_located((By.ID, "more-results")))
             button.send_keys(Keys.RETURN)
             time.sleep(2)            
             
